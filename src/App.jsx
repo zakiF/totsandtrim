@@ -93,7 +93,22 @@ function Nav() {
             </a>
           </li>
           <li>
-            <a href="#contact" onClick={() => setOpen(false)}>
+            <a
+              href="/location.html"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setOpen(false)}
+            >
+              Location
+            </a>
+          </li>
+          <li>
+            <a
+              href="/contact.html"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setOpen(false)}
+            >
               Contact
             </a>
           </li>
@@ -126,17 +141,11 @@ function App() {
 
       <section id="home" className="hero">
         <div className="shell hero-inner">
-          <h1 className="logo-heading">
-            <span className="c1">t</span>
-            <span className="c2">o</span>
-            <span className="c3">t</span>
-            <span className="c4">s</span>
-            <span className="c5">&nbsp;&amp;&nbsp;</span>
-            <span className="c6">t</span>
-            <span className="c7">r</span>
-            <span className="c8">i</span>
-            <span className="c9">m</span>
-          </h1>
+          <img
+            className="hero-logo-img"
+            src="/hero-logo.png"
+            alt="Tots and Trim logo"
+          />
           <p className="hero-copy">
             <strong>Welcome to Tots &amp; Trim!</strong> Where every visit is
             designed for little cuts and big smiles. We believe a child's
@@ -252,53 +261,6 @@ function App() {
           <div className="booking-visual" aria-hidden="true">
             <span>📱</span>
             <p>Simple booking for busy parents</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="section light">
-        <div className="shell contact">
-          <h2>Location &amp; Contact Information</h2>
-          <div className="contact-grid">
-            <div>
-              <h3>Our Location</h3>
-              <p>
-                Taman Tun Dr Ismail, 60000 Kuala Lumpur, Wilayah Persekutuan
-                Kuala Lumpur
-              </p>
-
-              <h3>Operating Hours</h3>
-              <p>
-                <strong>Tuesday - Sunday:</strong> 10:00 AM - 8:00 PM
-              </p>
-              <p>Closed on Mondays and public holidays.</p>
-
-              <h3>Contact Us</h3>
-              <p>
-                WhatsApp:{" "}
-                <a href="https://wa.me/60123889771" target="_blank" rel="noreferrer">
-                  (+6) 012-388-9771
-                </a>
-              </p>
-              <p>
-                Email: <a href="mailto:info@totsandtrim.com">info@totsandtrim.com</a>
-              </p>
-              <p className="social-row">
-                <a href="https://instagram.com/totsandtrim" target="_blank" rel="noreferrer">
-                  Instagram
-                </a>
-                <a href="https://facebook.com/totsandtrim" target="_blank" rel="noreferrer">
-                  Facebook
-                </a>
-                <a href="https://tiktok.com/@totsandtrim" target="_blank" rel="noreferrer">
-                  TikTok
-                </a>
-              </p>
-            </div>
-            <aside className="map-placeholder" aria-label="Map placeholder">
-              <p>Tots &amp; Trim</p>
-              <span>Kuala Lumpur</span>
-            </aside>
           </div>
         </div>
       </section>

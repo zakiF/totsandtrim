@@ -132,6 +132,13 @@ body {
   max-width: 900px;
 }
 
+.hero-logo-img {
+  display: block;
+  width: min(100%, 980px);
+  height: auto;
+  margin: 0 auto;
+}
+
 .logo-heading {
   margin: 0;
   font-family: "Fredoka One", sans-serif;
