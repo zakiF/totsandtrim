@@ -14,10 +14,10 @@
     />
     <style>
       :root {
-        --teal: #1bb2b6;
-        --teal-deep: #0f8f93;
-        --navy: #2f3f76;
-        --pink: #ef6eaa;
+        --teal: #62c6a6;
+        --teal-deep: #4aa589;
+        --navy: #214458;
+        --pink: #f47fa8;
       }
 
       * {
@@ -49,36 +49,14 @@
 
       .brand {
         text-decoration: none;
-        display: flex;
-        align-items: baseline;
-        gap: 4px;
-        flex-wrap: wrap;
+        display: inline-flex;
+        align-items: center;
       }
 
-      .brand-word {
-        font-family: "Fredoka One", sans-serif;
-        font-size: 1.6rem;
-        line-height: 1;
-      }
-
-      .brand-sub {
-        width: 100%;
-        color: #267173;
-        letter-spacing: 0.08em;
-        font-size: 0.66rem;
-        font-weight: 700;
-      }
-
-      .b1 {
-        color: #57a7ca;
-      }
-
-      .b2 {
-        color: #b993ca;
-      }
-
-      .b3 {
-        color: #ed6ba3;
+      .brand-logo {
+        display: block;
+        width: auto;
+        height: 56px;
       }
 
       .menu {
@@ -257,17 +235,14 @@
     <header class="nav-wrap">
       <nav class="nav shell">
         <a class="brand" href="/">
-          <span class="brand-word b1">tots</span>
-          <span class="brand-word b2">&amp;</span>
-          <span class="brand-word b3">trim</span>
-          <span class="brand-sub">hair . nail . play</span>
+          <img src="/hero-logo.png" alt="Tots and Trim Home" class="brand-logo" />
         </a>
         <ul class="menu">
-          <li><a href="/#signature">Our Signature</a></li>
-          <li><a href="/#services">Services</a></li>
+          <li><a href="/#home">Home</a></li>
+          <li><a href="/#spaces">Spaces</a></li>
           <li><a href="/location.html">Location</a></li>
           <li><a class="active" href="/contact.html">Contact</a></li>
-          <li><a href="/#survey">Survey</a></li>
+          <li><a href="/#subscribe">Subscribe</a></li>
           <li>
             <a class="book-btn" href="https://wa.me/60123889771" target="_blank" rel="noreferrer"
               >Book Now</a
