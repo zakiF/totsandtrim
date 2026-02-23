@@ -91,6 +91,21 @@ body {
   font-size: 0.95rem;
 }
 
+.menu-link-btn {
+  border: 0;
+  background: transparent;
+  color: #316177;
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu a.active {
+  color: var(--teal-deep);
+}
+
 .book-btn {
   background: var(--pink);
   color: #fff !important;
@@ -218,7 +233,9 @@ body {
 
 .spaces-intro h2,
 .subscribe-right h2,
-.space-copy h2 {
+.space-copy h2,
+.page-card h1,
+.page-title {
   margin: 0.55rem 0 0.85rem;
   font-family: "Fredoka One", sans-serif;
   color: #2a5f78;
@@ -256,10 +273,6 @@ body {
   order: 1;
 }
 
-.space-image-wrap {
-  position: relative;
-}
-
 .space-image-wrap img {
   width: 100%;
   height: clamp(300px, 37vw, 520px);
@@ -282,7 +295,7 @@ body {
 }
 
 .space-copy p {
-  margin: 0.85rem 0 1.45rem;
+  margin: 0.85rem 0 0;
   color: #557788;
   line-height: 1.65;
   font-size: 1.04rem;
@@ -370,6 +383,178 @@ body {
   cursor: pointer;
 }
 
+.page-shell {
+  padding: 1.8rem 0 2.6rem;
+}
+
+.page-card {
+  background: #fff;
+  border: 1px solid #d7f1e8;
+  border-radius: 22px;
+  padding: 28px;
+}
+
+.page-card h2 {
+  margin: 1.2rem 0 0.6rem;
+  color: #2a5f78;
+  font-family: "Fredoka One", sans-serif;
+}
+
+.page-card p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1.04rem;
+  color: #416375;
+}
+
+.page-card a {
+  color: var(--teal-deep);
+  font-weight: 800;
+}
+
+.row {
+  margin-top: 10px !important;
+}
+
+.hours-title {
+  margin-top: 26px;
+}
+
+.hours-list {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 540px;
+}
+
+.hours-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  border-bottom: 1px solid #e5eff2;
+  padding: 8px 0;
+}
+
+.hours-list .day {
+  color: var(--pink);
+  font-weight: 800;
+}
+
+.hours-list .time {
+  color: #2f3f76;
+  font-weight: 700;
+}
+
+.social {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.social a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 2px solid #c6e5e7;
+}
+
+.page-title {
+  margin-top: 0;
+}
+
+.map-layout {
+  border: 1px solid #d6e4ea;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  min-height: 640px;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+}
+
+.left-panel {
+  background: #f8fbfc;
+  border-right: 1px solid #d6e4ea;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-box {
+  margin: 14px;
+  border: 1px solid #ccd9df;
+  border-radius: 6px;
+  background: #fff;
+  padding: 12px 14px;
+  color: #7e8b94;
+  font-size: 1.02rem;
+}
+
+.location-card {
+  margin: 0 14px 14px;
+  border: 1px solid #d6e4ea;
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px;
+}
+
+.location-card h2 {
+  margin: 0 0 8px;
+  color: #2f6fad;
+  font-size: 1.7rem;
+  line-height: 1.2;
+  font-family: "Fredoka One", sans-serif;
+}
+
+.address {
+  margin: 0;
+  color: #475b6b;
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+.distance {
+  margin: 10px 0 0;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.actions a {
+  text-decoration: none;
+  border: 1px solid #c6d8e2;
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: #2f6fad;
+  font-weight: 700;
+  background: #fff;
+}
+
+.meta {
+  margin-top: auto;
+  border-top: 1px solid #d6e4ea;
+  padding: 14px;
+  color: #5f7080;
+  font-size: 0.95rem;
+}
+
+.map-frame {
+  background: #e7eef4;
+}
+
+.map-frame iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 640px;
+  border: 0;
+}
+
 @media (max-width: 1080px) {
   .hero-curve-panel {
     width: min(58vw, 640px);
@@ -379,6 +564,10 @@ body {
   .split-grid {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+
+  .space-section.reverse .split-grid {
+    grid-template-columns: 1fr;
   }
 
   .space-section.reverse .space-image-wrap,
@@ -452,5 +641,18 @@ body {
 
   .subscribe-form button {
     width: 100%;
+  }
+
+  .map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .left-panel {
+    border-right: 0;
+    border-bottom: 1px solid #d6e4ea;
+  }
+
+  .map-frame iframe {
+    min-height: 400px;
   }
 }
