@@ -274,7 +274,8 @@ function Subscribe({
       });
       setEmail("");
     } catch (err) {
-      if (err?.code === "permission-denied") {
+      const errCode = String(err?.code || "");
+      if (errCode.includes("permission-denied")) {
         setStatus({
           type: "success",
           message: "You’re already subscribed with this email. Thanks for being with us.",
@@ -312,7 +313,8 @@ function Subscribe({
       });
       setWhatsAppNumber("");
     } catch (err) {
-      if (err?.code === "permission-denied") {
+      const errCode = String(err?.code || "");
+      if (errCode.includes("permission-denied")) {
         setWaStatus({
           type: "success",
           message: "This WhatsApp number is already on our notify list.",
