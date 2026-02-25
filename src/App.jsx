@@ -158,6 +158,11 @@ function AppNav() {
               Join Our Team
             </button>
           </li>
+          <li>
+            <button type="button" className="menu-link-btn" onClick={() => goToRouteTop("/test")}>
+              Test
+            </button>
+          </li>
         </ul>
       </nav>
     </header>
@@ -610,6 +615,17 @@ function CareersPage() {
   );
 }
 
+function TestPage() {
+  return (
+    <main className="shell page-shell">
+      <section className="page-card">
+        <h1>Test</h1>
+        <p>This is a test tab page.</p>
+      </section>
+    </main>
+  );
+}
+
 function App() {
   return (
     <HashRouter>
@@ -621,6 +637,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/location" element={<LocationPage />} />
           <Route path="/careers" element={<CareersPage />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
       </div>
     </HashRouter>
