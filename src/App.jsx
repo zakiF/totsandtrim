@@ -137,7 +137,7 @@ function AppNav() {
           <li>
             <button
               type="button"
-              className="menu-link-btn book-btn nav-service-btn"
+              className="menu-link-btn nav-service-btn"
               onClick={() => goToRouteTop("/services")}
             >
               Our Service
@@ -165,6 +165,22 @@ function AppNav() {
 }
 
 function Hero() {
+  const navigate = useNavigate();
+
+  const handleBookAppointment = () => {
+    navigate("/services");
+    window.setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 120);
+  };
+
+  const handleExploreSpace = () => {
+    const spaces = document.getElementById("spaces");
+    if (spaces) {
+      spaces.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <section id="home" className="hero-main">
       <img
@@ -181,12 +197,12 @@ function Hero() {
           one beautiful space.
         </p>
         <div className="hero-actions">
-          <a className="btn btn-solid" href="#/services">
+          <button type="button" className="btn btn-solid" onClick={handleBookAppointment}>
             Book Appointment
-          </a>
-          <a className="btn btn-outline" href="#spaces">
+          </button>
+          <button type="button" className="btn btn-outline" onClick={handleExploreSpace}>
             Explore The Space
-          </a>
+          </button>
         </div>
       </div>
     </section>
@@ -215,6 +231,9 @@ function Subscribe({
   sectionId = "subscribe",
   title = "Stay in the loop",
   description = "Share your email for occasional updates, early news, and family-friendly offers. We keep it light and useful.",
+  ctaOnly = false,
+  ctaLabel = "KEEP ME UPDATED",
+  onCtaClick = null,
 }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
@@ -289,7 +308,7 @@ function Subscribe({
       await saveWhatsappLead(normalized);
       setWaStatus({
         type: "success",
-        message: "Perfect. We’ll send one WhatsApp message when we open.",
+        message: "Perfect. We’ll keep you notified.",
       });
       setWhatsAppNumber("");
     } catch (err) {
@@ -321,53 +340,61 @@ function Subscribe({
           <h2>{title}</h2>
           <p>{description}</p>
 
-          <form className="subscribe-form" onSubmit={handleSubmit}>
-            <label className="sr-only" htmlFor="email-input">
-              Your email
-            </label>
-            <input
-              id="email-input"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "SAVING..." : "KEEP ME UPDATED"}
+          {ctaOnly ? (
+            <button type="button" className="btn btn-solid" onClick={onCtaClick}>
+              {ctaLabel}
             </button>
-          </form>
-          {status.message && (
-            <p className={`subscribe-status ${status.type}`}>{status.message}</p>
-          )}
-          {status.type === "success" && (
-            <div className="whatsapp-prompt" ref={whatsappPromptRef}>
-              <h3>Want a one-time WhatsApp notification when we open?</h3>
-              <p>
-                Be the first to know when we launch. No spam, just one message when
-                we&apos;re ready.
-              </p>
-              <form className="whatsapp-form" onSubmit={handleWhatsappSubmit}>
-                <label className="sr-only" htmlFor="wa-number">
-                  WhatsApp number
+          ) : (
+            <>
+              <form className="subscribe-form" onSubmit={handleSubmit}>
+                <label className="sr-only" htmlFor="email-input">
+                  Your email
                 </label>
                 <input
-                  id="wa-number"
-                  type="tel"
-                  inputMode="tel"
-                  placeholder="Your WhatsApp number (e.g. +6012...)"
-                  value={whatsAppNumber}
-                  onChange={(e) => setWhatsAppNumber(e.target.value)}
+                  id="email-input"
+                  type="email"
+                  placeholder="Your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <button type="submit" className="btn btn-solid" disabled={waSubmitting}>
-                  {waSubmitting ? "SAVING..." : "NOTIFY ME ON WHATSAPP"}
+                <button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "SAVING..." : "KEEP ME UPDATED"}
                 </button>
               </form>
-              {waStatus.message && (
-                <p className={`subscribe-status ${waStatus.type}`}>{waStatus.message}</p>
+              {status.message && (
+                <p className={`subscribe-status ${status.type}`}>{status.message}</p>
               )}
-            </div>
+              {status.type === "success" && (
+                <div className="whatsapp-prompt" ref={whatsappPromptRef}>
+                  <h3>Want a one-time WhatsApp notification when we open?</h3>
+                  <p>
+                    Be the first to know when we launch. No spam, just one message when
+                    we&apos;re ready.
+                  </p>
+                  <form className="whatsapp-form" onSubmit={handleWhatsappSubmit}>
+                    <label className="sr-only" htmlFor="wa-number">
+                      WhatsApp number
+                    </label>
+                    <input
+                      id="wa-number"
+                      type="tel"
+                      inputMode="tel"
+                      placeholder="Your WhatsApp number (e.g. +6012...)"
+                      value={whatsAppNumber}
+                      onChange={(e) => setWhatsAppNumber(e.target.value)}
+                      required
+                    />
+                    <button type="submit" className="btn btn-solid" disabled={waSubmitting}>
+                      {waSubmitting ? "SAVING..." : "NOTIFY ME ON WHATSAPP"}
+                    </button>
+                  </form>
+                  {waStatus.message && (
+                    <p className={`subscribe-status ${waStatus.type}`}>{waStatus.message}</p>
+                  )}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -376,6 +403,15 @@ function Subscribe({
 }
 
 function HomePage() {
+  const navigate = useNavigate();
+
+  const handleStayUpdated = () => {
+    navigate("/services");
+    window.setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 120);
+  };
+
   return (
     <>
       <Hero />
@@ -393,7 +429,11 @@ function HomePage() {
         <AreaSection key={area.id} area={area} reverse={index % 2 === 1} />
       ))}
 
-      <Subscribe />
+      <Subscribe
+        ctaOnly
+        ctaLabel="KEEP ME UPDATED"
+        onCtaClick={handleStayUpdated}
+      />
     </>
   );
 }
@@ -464,10 +504,13 @@ function ServicesPage() {
       <section className="page-card services-page-card">
         <h1>Our Service</h1>
         <p>
+          We use gentle, natural products so every visit feels safe, soothing, and
+          kind to little ones.
+        </p>
+        <p className="row">
           Kid-friendly and parent-friendly services designed for comfort, fun, and
           confidence. Timings below are estimated durations.
         </p>
-        <p className="row">We use organic natural product.</p>
 
         {servicesCatalog.map((group) => (
           <section className="service-group" key={group.category}>
@@ -546,66 +589,105 @@ function LocationPage() {
 }
 
 function CareersPage() {
+  const openings = [
+    { title: "Hair Stylist", subtitle: "(Senior / Junior)", type: "Full Time / Part Time" },
+    { title: "Hair Updo Specialist", type: "Part Time" },
+  ];
+
   return (
-    <main className="shell page-shell">
-      <section className="page-card careers-card">
-        <h1>Join Our Team</h1>
-        <img
-          className="careers-image"
-          src="/Join_team.png"
-          alt="Join our team at Tots and Trim"
-        />
-        <h2>We&apos;re Hiring</h2>
-        <p>
-          Tots &amp; Trim is growing, and we&apos;re looking for warm, skilled team members
-          who enjoy working with children and families.
-        </p>
-        <p className="open-roles"><strong>Open roles:</strong> Hair Dresser / Hair Stylist</p>
-        <p className="open-roles">
-          <strong>Employment type:</strong> Full-time / Part-time
-        </p>
-        <p className="open-roles">
-          <strong>Salary:</strong> Full-time RM 3,000 - RM 3,500 | Part-time RM 1,500
-        </p>
+    <main className="careers-page-bg">
+      <div className="shell page-shell">
+        <section className="page-card careers-card">
+          <h1>Join Our Team</h1>
+          <img
+            className="careers-image"
+            src="/Join_team.png"
+            alt="Join our team at Tots and Trim"
+          />
+          <h2>We&apos;re Hiring</h2>
+          <p>
+            Tots &amp; Trim is growing, and we&apos;re looking for warm, skilled team members
+            who enjoy working with children and families.
+          </p>
 
-        <h3 className="hours-title">What we&apos;re looking for</h3>
-        <ul className="careers-list" aria-label="Careers requirements">
-          <li>
-            <span className="careers-main">Experience</span>
-            <ul>
-              <li>Previous hair styling experience (kids styling is a plus).</li>
-            </ul>
-          </li>
-          <li>
-            <span className="careers-main">Attitude</span>
-            <ul>
-              <li>Patient, friendly, and confident with children and parents.</li>
-              <li>Able to converse in English.</li>
-            </ul>
-          </li>
-          <li>
-            <span className="careers-main">Skills</span>
-            <ul>
-              <li>Comfortable with modern cuts, trims, and basic styling.</li>
-            </ul>
-          </li>
-          <li>
-            <span className="careers-main">Teamwork</span>
-            <ul>
-              <li>Works well in a clean, fast-paced, supportive salon environment.</li>
-            </ul>
-          </li>
-        </ul>
+          <h2>Open roles</h2>
+          <div className="jobs-board" aria-label="Open roles">
+            {openings.map((job) => (
+              <article className="job-row" key={job.title}>
+                <div className="job-role-col">
+                  <h4>
+                    {job.title}
+                    {job.subtitle ? (
+                      <>
+                        <br />
+                        <span className="job-title-sub">{job.subtitle}</span>
+                      </>
+                    ) : null}
+                  </h4>
+                </div>
+                <div className="job-type-col">
+                  <p className="job-label">Position Type</p>
+                  <p className="job-type">{job.type}</p>
+                </div>
+              </article>
+            ))}
+          </div>
 
-        <h2>How to apply</h2>
-        <p>
-          Send your updated CV to{" "}
-          <a href="mailto:info@totsandtrim.com">info@totsandtrim.com</a>
-        </p>
-        <p className="row">
-          Shortlisted candidates will be contacted for the next step.
-        </p>
-      </section>
+          <h3 className="hours-title">What we&apos;re looking for</h3>
+          <ul className="careers-list" aria-label="Careers requirements">
+            <li>
+              <span className="careers-main">Experience</span>
+              <ul>
+                <li>Previous hair styling experience (kids styling is a plus).</li>
+                <li>Minimum 1–2 years preferred.</li>
+                <li>Open to junior stylists with the right attitude.</li>
+              </ul>
+            </li>
+            <li>
+              <span className="careers-main">Attitude</span>
+              <ul>
+                <li>Patient, friendly, and confident with children and parents.</li>
+                <li>Able to converse in English.</li>
+              </ul>
+            </li>
+            <li>
+              <span className="careers-main">Skills</span>
+              <ul>
+                <li>Comfortable with modern cuts, trims, and basic styling.</li>
+              </ul>
+            </li>
+            <li>
+              <span className="careers-main">Teamwork</span>
+              <ul>
+                <li>Works well in a clean, fast-paced, supportive salon environment.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <h2>How to apply</h2>
+          <p>
+            Send your updated CV to{" "}
+            <a href="mailto:info@totsandtrim.com">info@totsandtrim.com</a>
+          </p>
+          <ul className="careers-list" aria-label="What to send with CV">
+            <li>
+              <span className="careers-main">What to send with your CV</span>
+              <ul>
+                <li>Portfolio or Instagram of your work.</li>
+                <li>Your availability (full-time / part-time).</li>
+                <li>Your earliest start date.</li>
+              </ul>
+            </li>
+          </ul>
+          <p className="row">
+            Shortlisted candidates will be contacted for the next step.
+          </p>
+          <p className="row">
+            If you love working with kids and want to be part of a growing,
+            family-focused salon, we&apos;d love to hear from you!
+          </p>
+        </section>
+      </div>
     </main>
   );
 }

@@ -177,7 +177,8 @@ body {
 }
 
 .hero-logo {
-  width: min(420px, 92%);
+  width: min(350px, 82%);
+  margin-left: 3.8rem;
   margin-bottom: 1.25rem;
 }
 
@@ -479,6 +480,11 @@ body {
   max-width: 860px;
 }
 
+.careers-page-bg {
+  background: #f3f4f6;
+  min-height: calc(100vh - 74px);
+}
+
 .careers-image {
   width: 100%;
   max-height: 340px;
@@ -493,15 +499,54 @@ body {
   padding-left: 1.2rem;
 }
 
-.open-roles {
-  margin-top: 0.75rem !important;
-  display: inline-block;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #f2b6ce;
-  background: #fff4fa;
-  color: #a33767 !important;
-  font-weight: 800;
+.jobs-board {
+  margin-top: 0.85rem;
+  border: 1px solid #e3e3e6;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f0f0f2;
+}
+
+.job-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #dfe0e3;
+}
+
+.job-row:last-child {
+  border-bottom: 0;
+}
+
+.job-role-col h4 {
+  margin: 0;
+  color: #d8408a;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.job-title-sub {
+  font-size: 0.86em;
+}
+
+.job-type-col p {
+  margin: 0;
+}
+
+.job-label {
+  color: #7d8390;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.job-type {
+  margin-top: 6px !important;
+  color: #1f2b38 !important;
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  line-height: 1.2;
 }
 
 .careers-list > li {
@@ -870,7 +915,8 @@ body {
   }
 
   .hero-logo {
-    width: min(330px, 100%);
+    width: min(280px, 100%);
+    margin-left: 0;
   }
 
   .subscribe-form {
@@ -891,6 +937,20 @@ body {
 
   .map-layout {
     grid-template-columns: 1fr;
+  }
+
+  .job-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .job-role-col h4 {
+    font-size: 1.15rem;
+  }
+
+  .job-type {
+    font-size: 1rem !important;
   }
 
   .service-grid {
