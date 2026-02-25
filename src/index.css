@@ -41,6 +41,17 @@ body {
   border: 0;
 }
 
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .shell {
   width: min(var(--shell), 92%);
   margin: 0 auto;
@@ -280,12 +291,185 @@ body {
   order: 1;
 }
 
-.space-image-wrap img {
+.space-image-wrap {
+  position: relative;
+}
+
+.slider-stage {
+  position: relative;
   width: 100%;
   height: clamp(300px, 37vw, 520px);
-  object-fit: cover;
   border-radius: 26px;
   box-shadow: 0 18px 38px rgba(28, 41, 57, 0.16);
+  overflow: hidden;
+}
+
+.slider-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.slider-stage.is-transitioning .slider-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.slider-image.static {
+  position: relative;
+}
+
+.slider-image.enter.next {
+  animation: slideInFromRight 700ms ease;
+}
+
+.slider-image.exit.next {
+  animation: slideOutToLeft 700ms ease;
+}
+
+.slider-image.enter.prev {
+  animation: slideInFromLeft 700ms ease;
+}
+
+.slider-image.exit.prev {
+  animation: slideOutToRight 700ms ease;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(14%);
+    opacity: 0.82;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-14%);
+    opacity: 0.82;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-14%);
+    opacity: 0.82;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(14%);
+    opacity: 0.82;
+  }
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1d3242;
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  z-index: 2;
+}
+
+.slider-arrow-left {
+  left: -24px;
+}
+
+.slider-arrow-right {
+  right: -24px;
+}
+
+.slider-arrow:hover {
+  background: #f6fdff;
+}
+
+.slider-dots {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.slider-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 0;
+  display: grid;
+  place-items: center;
+  padding: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+}
+
+.slider-dot span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.slider-dot.active span {
+  background: #ffffff;
+}
+
+.slider-counter {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.86rem;
+  background: rgba(13, 27, 36, 0.34);
+  border-radius: 999px;
+  padding: 4px 10px;
+  backdrop-filter: blur(2px);
+}
+
+.slider-mobile-actions {
+  display: none;
+}
+
+.slider-mobile-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-weight: 800;
+  color: #ffffff;
+  background: #2f6984;
+  cursor: pointer;
 }
 
 .space-copy {
@@ -308,11 +492,24 @@ body {
   font-size: 1.04rem;
 }
 
+.space-copy a {
+  color: #2f6984;
+  font-weight: 800;
+}
+
 .subscribe-section {
   margin-top: 2.5rem;
   background: linear-gradient(90deg, #ddf8f2 0%, #f9f7ef 100%);
   border-top: 1px solid #ccefe4;
   border-bottom: 1px solid #ccefe4;
+}
+
+.home-footer-note {
+  margin: 1rem auto 2rem;
+  color: #6a8391;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .subscribe-grid {
@@ -355,6 +552,10 @@ body {
   color: #517184;
   line-height: 1.6;
   max-width: 620px;
+}
+
+.subscribe-cta-btn {
+  margin-top: 1.4rem;
 }
 
 .subscribe-form {
@@ -868,6 +1069,14 @@ body {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 @media (max-width: 900px) {
   .menu {
     display: none;
@@ -937,6 +1146,17 @@ body {
 
   .map-layout {
     grid-template-columns: 1fr;
+  }
+
+  .slider-arrow {
+    display: none;
+  }
+
+  .slider-mobile-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    justify-content: flex-end;
   }
 
   .job-row {

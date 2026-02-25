@@ -8,24 +8,33 @@ const areaSections = [
     title: "Hair Cut Area",
     subtitle: "Quick trims, calm vibes, confident smiles.",
     copy: "Bright stations, child-friendly seating, and experienced stylists make every haircut smooth and stress-free.",
-    image: "/Hair_cut_area.png",
-    alt: "Hair cut area at Tots and Trim",
-  },
-  {
-    id: "play-zone",
-    title: "Play Area",
-    subtitle: "Built for fun while parents relax.",
-    copy: "A playful corner that keeps little ones engaged before or after their appointment with games and creative activities.",
-    image: "/Play_area.png",
-    alt: "Play area at Tots and Trim",
+    images: [
+      { src: "/Hair_cut_area.png", alt: "Hair cut area at Tots and Trim" },
+      { src: "/boys_cut.png", alt: "Boy enjoying a game while getting a haircut" },
+      { src: "/tinsels.png", alt: "Hair tinsel styling at Tots and Trim" },
+    ],
   },
   {
     id: "wash-zone",
     title: "Wash & Nail Area",
     subtitle: "Gentle care for tiny hands and happy heads.",
     copy: "Comfort-first wash stations and kid-safe nail services give your child a polished look in a clean, safe environment.",
-    image: "/Wash_nail_area.png",
-    alt: "Wash and nail area at Tots and Trim",
+    images: [
+      { src: "/Wash_nail_area.png", alt: "Wash and nail area at Tots and Trim" },
+      { src: "/manicure.png", alt: "Kids manicure service at Tots and Trim" },
+      { src: "/boys_wash2.png", alt: "Boy at wash station at Tots and Trim" },
+    ],
+  },
+  {
+    id: "play-zone",
+    title: "Play Area",
+    subtitle: "Built for fun while parents relax.",
+    copy: "A playful corner with games, creative activities, and kid-friendly 3D printing fun before or after each appointment.",
+    images: [
+      { src: "/Play_area.png", alt: "Play area at Tots and Trim" },
+      { src: "/3D_printer.png", alt: "3D printer activity in the play area at Tots and Trim" },
+      { src: "/play_area_nex2.png", alt: "Children playing on Nex Playground at Tots and Trim" },
+    ],
   },
 ];
 
@@ -62,6 +71,39 @@ const servicesCatalog = [
     ],
   },
 ];
+
+function useRevealOnce(threshold = 0.16) {
+  const ref = useRef(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    if (revealed || !ref.current) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [revealed, threshold]);
+
+  return { ref, revealed };
+}
+
+function RevealBlock({ children, className = "" }) {
+  const { ref, revealed } = useRevealOnce();
+  return (
+    <div ref={ref} className={`reveal-on-scroll ${revealed ? "revealed" : ""} ${className}`.trim()}>
+      {children}
+    </div>
+  );
+}
 
 function AppNav() {
   const [open, setOpen] = useState(false);
@@ -210,17 +252,178 @@ function Hero() {
 }
 
 function AreaSection({ area, reverse }) {
+  const sectionRef = useRef(null);
+  const imageList = area.images || [{ src: area.image, alt: area.alt }];
+  const [imageIndex, setImageIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionDirection, setTransitionDirection] = useState("next");
+  const [progress, setProgress] = useState(0);
+  const [isInView, setIsInView] = useState(false);
+  const imageIndexRef = useRef(0);
+  const currentImage = imageList[imageIndex];
+  const previousImage = imageList[previousIndex];
+  const hasMultipleImages = imageList.length > 1;
+  const slideDurationMs = 2500;
+
+  const transitionToImage = (targetIndex, direction = "next") => {
+    if (targetIndex === imageIndexRef.current) return;
+    setPreviousIndex(imageIndexRef.current);
+    setTransitionDirection(direction);
+    setImageIndex(targetIndex);
+    setIsTransitioning(true);
+    setProgress(0);
+  };
+
+  const showNextImage = () => {
+    transitionToImage((imageIndexRef.current + 1) % imageList.length, "next");
+  };
+
+  const showPrevImage = () => {
+    transitionToImage(
+      (imageIndexRef.current - 1 + imageList.length) % imageList.length,
+      "prev"
+    );
+  };
+
+  const jumpToImage = (targetIndex) => {
+    const direction = targetIndex > imageIndexRef.current ? "next" : "prev";
+    transitionToImage(targetIndex, direction);
+  };
+
+  useEffect(() => {
+    imageIndexRef.current = imageIndex;
+  }, [imageIndex]);
+
+  useEffect(() => {
+    if (!isTransitioning) return undefined;
+    const timer = window.setTimeout(() => setIsTransitioning(false), 700);
+    return () => window.clearTimeout(timer);
+  }, [isTransitioning]);
+
+  useEffect(() => {
+    if (!sectionRef.current || !hasMultipleImages) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.35 }
+    );
+
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [hasMultipleImages]);
+
+  useEffect(() => {
+    if (!hasMultipleImages || !isInView) return undefined;
+
+    const stepMs = 50;
+    const stepAmount = (stepMs / slideDurationMs) * 100;
+
+    const timer = window.setInterval(() => {
+      setProgress((prev) => {
+        if (prev + stepAmount >= 100) {
+          transitionToImage((imageIndexRef.current + 1) % imageList.length, "next");
+          return 0;
+        }
+        return prev + stepAmount;
+      });
+    }, stepMs);
+
+    return () => window.clearInterval(timer);
+  }, [hasMultipleImages, imageList.length, isInView]);
+
   return (
     <section className={`space-section ${reverse ? "reverse" : ""}`} id={area.id}>
       <div className="shell split-grid">
-        <div className="space-image-wrap">
-          <img src={area.image} alt={area.alt} />
+        <div className="space-image-wrap" ref={sectionRef}>
+          <div className={`slider-stage ${isTransitioning ? "is-transitioning" : ""}`}>
+            {isTransitioning && (
+              <img
+                className={`slider-image exit ${transitionDirection}`}
+                src={previousImage.src}
+                alt={previousImage.alt}
+              />
+            )}
+            <img
+              className={`slider-image ${isTransitioning ? `enter ${transitionDirection}` : "static"}`}
+              src={currentImage.src}
+              alt={currentImage.alt}
+            />
+          </div>
+          {hasMultipleImages && (
+            <>
+              <button
+                type="button"
+                className="slider-arrow slider-arrow-left"
+                onClick={showPrevImage}
+                aria-label="Previous image"
+              >
+                &#8592;
+              </button>
+              <button
+                type="button"
+                className="slider-arrow slider-arrow-right"
+                onClick={showNextImage}
+                aria-label="Next image"
+              >
+                &#8594;
+              </button>
+              <div className="slider-dots" aria-label="Image slides">
+                {imageList.map((image, idx) => {
+                  const isActive = idx === imageIndex;
+                  return (
+                    <button
+                      key={image.src}
+                      type="button"
+                      className={`slider-dot ${isActive ? "active" : ""}`}
+                      aria-label={`Show slide ${idx + 1}`}
+                      onClick={() => jumpToImage(idx)}
+                      style={
+                        isActive
+                          ? {
+                              background: `conic-gradient(#ffffff ${progress * 3.6}deg, rgba(255, 255, 255, 0.35) 0deg)`,
+                            }
+                          : undefined
+                      }
+                    >
+                      <span />
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+          {hasMultipleImages && (
+            <div className="slider-counter" aria-hidden="true">
+              {imageIndex + 1} / {imageList.length}
+            </div>
+          )}
+          {hasMultipleImages && (
+            <div className="slider-mobile-actions">
+              <button type="button" className="slider-mobile-btn" onClick={showPrevImage}>
+                Prev
+              </button>
+              <button type="button" className="slider-mobile-btn" onClick={showNextImage}>
+                Next
+              </button>
+            </div>
+          )}
         </div>
         <div className="space-copy">
           <p className="eyebrow">Tots &amp; Trim Spaces</p>
           <h2>{area.title}</h2>
           <h3>{area.subtitle}</h3>
-          <p>{area.copy}</p>
+          {area.id === "play-zone" ? (
+            <p>
+              A playful corner with games, creative activities, and kid-friendly 3D
+              printing fun before or after each appointment, plus interactive fun with{" "}
+              <a href="https://www.nexplayground.com/" target="_blank" rel="noreferrer">
+                Nex Playground
+              </a>.
+            </p>
+          ) : (
+            <p>{area.copy}</p>
+          )}
         </div>
       </div>
     </section>
@@ -343,7 +546,11 @@ function Subscribe({
           <p>{description}</p>
 
           {ctaOnly ? (
-            <button type="button" className="btn btn-solid" onClick={onCtaClick}>
+            <button
+              type="button"
+              className="btn btn-solid subscribe-cta-btn"
+              onClick={onCtaClick}
+            >
               {ctaLabel}
             </button>
           ) : (
@@ -418,24 +625,35 @@ function HomePage() {
     <>
       <Hero />
 
-      <section id="spaces" className="spaces-intro shell">
-        <p className="eyebrow">Designed for Families</p>
-        <h2>Explore Our Signature Kids Salon Zones</h2>
-        <p>
-          Every corner is thoughtfully designed to keep children comfortable, engaged,
-          and excited throughout their visit.
-        </p>
-      </section>
+      <RevealBlock>
+        <section id="spaces" className="spaces-intro shell">
+          <p className="eyebrow">Designed for Families</p>
+          <h2>Explore Our Signature Kids Salon Zones</h2>
+          <p>
+            Every corner is thoughtfully designed to keep children comfortable, engaged,
+            and excited throughout their visit.
+          </p>
+        </section>
+      </RevealBlock>
 
       {areaSections.map((area, index) => (
-        <AreaSection key={area.id} area={area} reverse={index % 2 === 1} />
+        <RevealBlock key={area.id}>
+          <AreaSection area={area} reverse={index % 2 === 1} />
+        </RevealBlock>
       ))}
 
-      <Subscribe
-        ctaOnly
-        ctaLabel="KEEP ME UPDATED"
-        onCtaClick={handleStayUpdated}
-      />
+      <RevealBlock>
+        <Subscribe
+          ctaOnly
+          ctaLabel="KEEP ME UPDATED"
+          onCtaClick={handleStayUpdated}
+        />
+      </RevealBlock>
+
+      <footer className="home-footer-note shell">
+        Images shown are artist impressions for illustration. Actual salon layout,
+        services, and in-store details may vary.
+      </footer>
     </>
   );
 }
