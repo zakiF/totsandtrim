@@ -457,21 +457,6 @@ body {
   backdrop-filter: blur(2px);
 }
 
-.slider-mobile-actions {
-  display: none;
-}
-
-.slider-mobile-btn {
-  border: 0;
-  border-radius: 999px;
-  padding: 8px 16px;
-  font-family: inherit;
-  font-weight: 800;
-  color: #ffffff;
-  background: #2f6984;
-  cursor: pointer;
-}
-
 .space-copy {
   background: linear-gradient(180deg, #ffffff 0%, #f2fffb 100%);
   border: 1px solid #d7f1e8;
@@ -1149,14 +1134,17 @@ body {
   }
 
   .slider-arrow {
-    display: none;
+    width: 42px;
+    height: 42px;
+    font-size: 1.4rem;
   }
 
-  .slider-mobile-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    justify-content: flex-end;
+  .slider-arrow-left {
+    left: 10px;
+  }
+
+  .slider-arrow-right {
+    right: 10px;
   }
 
   .job-row {

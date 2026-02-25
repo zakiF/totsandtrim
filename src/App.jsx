@@ -398,16 +398,6 @@ function AreaSection({ area, reverse }) {
               {imageIndex + 1} / {imageList.length}
             </div>
           )}
-          {hasMultipleImages && (
-            <div className="slider-mobile-actions">
-              <button type="button" className="slider-mobile-btn" onClick={showPrevImage}>
-                Prev
-              </button>
-              <button type="button" className="slider-mobile-btn" onClick={showNextImage}>
-                Next
-              </button>
-            </div>
-          )}
         </div>
         <div className="space-copy">
           <p className="eyebrow">Tots &amp; Trim Spaces</p>
