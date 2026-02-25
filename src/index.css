@@ -585,6 +585,12 @@ body {
   font-weight: 700;
 }
 
+.service-reminder-btn {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .page-card h2 {
   margin: 1.2rem 0 0.6rem;
   color: #2a5f78;

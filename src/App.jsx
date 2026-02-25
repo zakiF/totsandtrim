@@ -446,6 +446,13 @@ function ContactPage() {
 }
 
 function ServicesPage() {
+  const scrollToServiceUpdates = () => {
+    const el = document.getElementById("service-updates");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <main className="shell page-shell">
       <Subscribe
@@ -479,9 +486,9 @@ function ServicesPage() {
 
       <section className="service-reminder shell">
         <p>Opening soon. Want updates and first access?</p>
-        <a className="btn btn-solid" href="#service-updates">
+        <button type="button" className="btn btn-solid service-reminder-btn" onClick={scrollToServiceUpdates}>
           Share Your Email
-        </a>
+        </button>
       </section>
     </main>
   );
