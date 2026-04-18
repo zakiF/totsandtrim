@@ -266,6 +266,14 @@ function AreaSection({ area, reverse }) {
   const hasMultipleImages = imageList.length > 1;
   const slideDurationMs = 2500;
 
+  useEffect(() => {
+    // Preload carousel images so the first manual transition does not stall on fetch/decode.
+    imageList.forEach((image) => {
+      const preloadImage = new Image();
+      preloadImage.src = image.src;
+    });
+  }, [imageList]);
+
   const transitionToImage = (targetIndex, direction = "next") => {
     if (targetIndex === imageIndexRef.current) return;
     setPreviousIndex(imageIndexRef.current);
@@ -314,7 +322,7 @@ function AreaSection({ area, reverse }) {
   }, [hasMultipleImages]);
 
   useEffect(() => {
-    if (!hasMultipleImages || !isInView) return undefined;
+    if (!hasMultipleImages || !isInView || isTransitioning) return undefined;
 
     const stepMs = 50;
     const stepAmount = (stepMs / slideDurationMs) * 100;
@@ -330,7 +338,7 @@ function AreaSection({ area, reverse }) {
     }, stepMs);
 
     return () => window.clearInterval(timer);
-  }, [hasMultipleImages, imageList.length, isInView]);
+  }, [hasMultipleImages, imageList.length, isInView, isTransitioning]);
 
   return (
     <section className={`space-section ${reverse ? "reverse" : ""}`} id={area.id}>
